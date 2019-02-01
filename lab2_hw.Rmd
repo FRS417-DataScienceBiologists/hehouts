@@ -1,0 +1,105 @@
+---
+title: "Lab 2 Homework"
+author: "Hannah Houts"
+date: "Winter 2019"
+output:
+  html_document:
+    keep_md: yes
+    theme: spacelab
+---
+
+## Instructions
+Answer the following questions and complete the exercises in RMarkdown. Please embed all of your code and push your final work to our [GitHub repository](https://github.com/FRS417-DataScienceBiologists). I will randomly select a few examples of student work at the start of each session to use as examples so be sure that your code is working to the best of your ability.
+
+## Load the tidyverse
+```{r}
+library("tidyverse")
+
+```
+
+## Mammals Sleep
+For this assignment, we are going to use built-in data on mammal sleep patterns.  
+```{r}
+msleep
+```
+
+
+
+1. From which publication are these data taken from? Don't do an internet search; show the code that you would use to find out in R.
+
+This data is from "A quantitative, theoretical framework for understanding mammalian sleep," published in proceedings of the National Academy of Sciences. 
+
+```{r}
+?msleep
+
+```
+
+
+
+2. Provide some summary information about the data to get you started; feel free to use the functions that you find most helpful.
+```{r}
+summary(msleep)
+
+```
+```{r}
+head(msleep)
+
+```
+
+
+
+3. Make a new data frame focused on body weight, but be sure to indicate the common name and genus of each mammal. Sort the data in descending order by body weight.
+
+```{r}
+bodyweight_df <- select(msleep, name, genus, bodywt)
+
+bodyweight_df
+
+```
+
+
+
+4. We are interested in two groups; small and large mammals. Let's define small as less than or equal to 1kg body weight and large as greater than or equal to 200kg body weight. For our study, we are interested in body weight and sleep total Make two new dataframes (large and small) based on these parameters. Sort the data in descending order by body weight.
+
+```{r}
+smallmammals_sleep_df <- msleep %>% filter(bodywt <= 1.0)
+smallmammals_sleep_df <- arrange(smallmammals_sleep_df, desc(bodywt))
+smallmammals_sleep_df
+
+```
+
+```{r}
+largemammals_sleep_df <- msleep %>% filter(bodywt >= 200.0)
+largemammals_sleep_df <- arrange(largemammals_sleep_df, desc(bodywt))
+largemammals_sleep_df
+
+```
+
+
+
+5. Let's try to figure out if large mammals sleep, on average, longer than small mammals. What is the average sleep duration for large mammals as we have defined them?
+```{r}
+mean(largemammals_sleep_df$sleep_total)
+
+```
+
+
+
+6. What is the average sleep duration for small mammals as we have defined them?
+```{r}
+mean(smallmammals_sleep_df$sleep_total)
+
+```
+
+
+
+7. Which animals sleep at least 18 hours per day? Be sure to show the name, genus, order, and sleep total. Sort by order and sleep total.
+```{r}
+mammals_that_sleep_min_18hrs_df <- msleep %>% filter(sleep_total >= 18.0)
+mammals_that_sleep_min_18hrs_df <- arrange(mammals_that_sleep_min_18hrs_df, order, sleep_total)
+mammals_that_sleep_min_18hrs_df
+ 
+```
+
+
+## Push your final code to [GitHub](https://github.com/FRS417-DataScienceBiologists)
