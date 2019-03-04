@@ -2,7 +2,9 @@
 title: "HW_5_1.0"
 author: "Hannah Houts"
 date: "March 1, 2019"
-output: html_document
+output: 
+  html_document:
+    keep_md: yes
 ---
 
 ##Instructions
@@ -20,7 +22,7 @@ Let’s revisit the mammal life history data to practice our ggplot skills. Some
 
 Load the data.
 ```{r}
-mammals <- readr::read_csv("mammal_lifehistories_v2.csv")
+mammals <- readr::read_csv("./../data/mammal_lifehistories_v2.csv")
 ```
 
 Use your preferred function to have a look. Do you notice any problems?

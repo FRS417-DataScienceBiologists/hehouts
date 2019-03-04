@@ -2,7 +2,9 @@
 title: "HW_4_Houts"
 author: "Hannah Houts"
 date: "February 25, 2019"
-output: html_document
+output: 
+  html_document:
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -21,7 +23,7 @@ library(tidyverse)
 Aren't mammals fun? Let's load up some more mammal data. This will be life history data for mammals. The [data](http://esapubs.org/archive/ecol/E084/093/) are from: *S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.*  
 
 ```{r}
-life_history <- readr::read_csv("mammal_lifehistories_v2.csv")
+life_history <- readr::read_csv("./../data/mammal_lifehistories_v2.csv")
 msleep <- msleep
 ```
 
@@ -39,11 +41,10 @@ life_history <-
 ```
 
 1. Explore the data using the method that you prefer. Below, I am using a new package called `skimr`. If you want to use this, make sure that it is installed.
-```{r}
-install.packages("skimr")
-```
+
 
 ```{r}
+#install.packages("skimr")
 library("skimr")
 ```
 
@@ -85,7 +86,7 @@ life_history %>%
 5. Mammals have a range of life histories, including lifespan. Produce a summary of lifespan in years by order. Be sure to include the minimum, maximum, mean, standard deviation, and total n.
 ```{r}
 
-#adjusts "-999" values to r-readable NAs
+#adjusts "-999" values to r-readable NAs, only pass in the data table
 life_history <- na_if(life_history,"-999")
 
 
@@ -107,6 +108,7 @@ life_history %>%
 life_history %>%
     filter(!is.na(gestation), !is.na(newborn), !is.na(wean_mass)) %>%
     group_by(order) %>% 
+  
     summarize(mean_gestation = mean(gestation),
               mean_newborn_mass = mean(newborn),
               mean_weaning_mass = mean(wean_mass),
