@@ -1,4 +1,4 @@
 # hehouts
 
  !false  
- _It's funny 'cause it's true._
+ _It's funny because it's true._
