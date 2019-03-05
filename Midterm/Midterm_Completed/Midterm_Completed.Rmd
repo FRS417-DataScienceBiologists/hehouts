@@ -120,11 +120,27 @@ I think this data is tidy. all data is stored in vectors, and only one type of d
 10. (2 points)Use `separate()` to separate institution name into two new columns "UNIV" and "CAMPUS".
 
 ```{r}
+univ_calif <- univ_calif %>% 
+    
+    separate(INSTNM, c("UNIV", "CAMPUS"), sep = "-")
 
 ```
 
 11. (1 point) As a final step, remove `Hastings College of Law` and `UC San Francisco` and store the final data frame as a new object `univ_calif_final`.
 
+```{r}
+univ_calif_final <- 
+    univ_calif %>% 
+    filter(CITY != "San Francisco")
+```
+
 12. (3 points) The column `ADM_RATE` is the admissions rate by campus. Which UC has the lowest and highest admissions rates? Please use a barplot.
+```{r}
+univ_calif_final%>%
+ggplot(aes(x = CAMPUS, y = ADM_RATE))+
+    geom_bar(stat = "identity")
+```
+Highest: Riverside. Lowest: Berkeley
+
 
 ## Knit Your Output and Post to [GitHub](https://github.com/FRS417-DataScienceBiologists)
