@@ -191,18 +191,187 @@ $(document).ready(function () {
 </div>
 
 
+<div id="note" class="section level3">
+<h3>Note:</h3>
+<p>I didnt have the chance to try this our in class, because I was nose deep in grad school interviews. I’m going to give it a fair chance (45 minutes), and upload those results. Then I’ll copy what I have, correct/finish the test, and upload it seperately.</p>
+</div>
 <div id="instructions" class="section level2">
 <h2>Instructions</h2>
 <p>This exam is designed to show me what you have learned and where there are problems. You may use your notes and anything from the <code>class_files</code> folder, but please no internet searches. You have 35 minutes to complete as many of these exercises as possible on your own, and 10 minutes to work with a partner.</p>
 <p>At the end of the exam, upload the complete .Rmd file to your GitHub repository.</p>
 <ol style="list-style-type: decimal">
-<li><p>(1 point) Load the tidyverse.</p></li>
-<li><p>(2 points) For these questions, we will use data about California colleges. Load the <code>ca_college_data.csv</code> as a new object called <code>colleges</code>.</p></li>
-<li><p>(1 point) Use your preferred function to have a look at the data and get an idea of its structure.</p></li>
-<li><p>(1 point) What are the column names?</p></li>
-<li><p>(3 points) Are there any NA’s in the data? If so, how many are present and in which variables?</p></li>
-<li><p>(3 points) Which cities in California have the highest number of colleges?</p></li>
-<li><p>(4 points) The column <code>COSTT4_A</code> is the annual cost of each institution. Which city has the highest cost?</p></li>
+<li>(1 point) Load the tidyverse.</li>
+</ol>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## -- Attaching packages ------------------------------------------------------------------------------------------------------------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## v ggplot2 3.1.0       v purrr   0.2.5  
+## v tibble  2.0.1       v dplyr   0.8.0.1
+## v tidyr   0.8.2       v stringr 1.3.1  
+## v readr   1.3.1       v forcats 0.3.0</code></pre>
+<pre><code>## -- Conflicts ---------------------------------------------------------------------------------------------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>(2 points) For these questions, we will use data about California colleges. Load the <code>ca_college_data.csv</code> as a new object called <code>colleges</code>.</li>
+</ol>
+<pre class="r"><code>colleges &lt;- readr::read_csv(&quot;./../../data/ca_college_data.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   INSTNM = col_character(),
+##   CITY = col_character(),
+##   STABBR = col_character(),
+##   ZIP = col_character(),
+##   ADM_RATE = col_double(),
+##   SAT_AVG = col_double(),
+##   PCIP26 = col_double(),
+##   COSTT4_A = col_double(),
+##   C150_4_POOLED = col_double(),
+##   PFTFTUG1_EF = col_double()
+## )</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>(1 point) Use your preferred function to have a look at the data and get an idea of its structure.</li>
+</ol>
+<pre class="r"><code>head(colleges)</code></pre>
+<pre><code>## # A tibble: 6 x 10
+##   INSTNM CITY  STABBR ZIP   ADM_RATE SAT_AVG PCIP26 COSTT4_A C150_4_POOLED
+##   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;
+## 1 Gross~ El C~ CA     9202~       NA      NA 0.0016     7956            NA
+## 2 Colle~ Visa~ CA     9327~       NA      NA 0.0066     8109            NA
+## 3 Colle~ San ~ CA     9440~       NA      NA 0.0038     8278            NA
+## 4 Ventu~ Vent~ CA     9300~       NA      NA 0.0035     8407            NA
+## 5 Oxnar~ Oxna~ CA     9303~       NA      NA 0.0085     8516            NA
+## 6 Moorp~ Moor~ CA     9302~       NA      NA 0.0151     8577            NA
+## # ... with 1 more variable: PFTFTUG1_EF &lt;dbl&gt;</code></pre>
+<pre class="r"><code>glimpse(colleges)</code></pre>
+<pre><code>## Observations: 341
+## Variables: 10
+## $ INSTNM        &lt;chr&gt; &quot;Grossmont College&quot;, &quot;College of the Sequoias&quot;, ...
+## $ CITY          &lt;chr&gt; &quot;El Cajon&quot;, &quot;Visalia&quot;, &quot;San Mateo&quot;, &quot;Ventura&quot;, &quot;...
+## $ STABBR        &lt;chr&gt; &quot;CA&quot;, &quot;CA&quot;, &quot;CA&quot;, &quot;CA&quot;, &quot;CA&quot;, &quot;CA&quot;, &quot;CA&quot;, &quot;CA&quot;, ...
+## $ ZIP           &lt;chr&gt; &quot;92020-1799&quot;, &quot;93277-2214&quot;, &quot;94402-3784&quot;, &quot;93003...
+## $ ADM_RATE      &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+## $ SAT_AVG       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, ...
+## $ PCIP26        &lt;dbl&gt; 0.0016, 0.0066, 0.0038, 0.0035, 0.0085, 0.0151, ...
+## $ COSTT4_A      &lt;dbl&gt; 7956, 8109, 8278, 8407, 8516, 8577, 8580, 9181, ...
+## $ C150_4_POOLED &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 0.2334, NA, NA, NA, NA, ...
+## $ PFTFTUG1_EF   &lt;dbl&gt; 0.3546, 0.5413, 0.3567, 0.3824, 0.2753, 0.4286, ...</code></pre>
+<ol start="4" style="list-style-type: decimal">
+<li>(1 point) What are the column names?</li>
+</ol>
+<pre class="r"><code>colnames(colleges)</code></pre>
+<pre><code>##  [1] &quot;INSTNM&quot;        &quot;CITY&quot;          &quot;STABBR&quot;        &quot;ZIP&quot;          
+##  [5] &quot;ADM_RATE&quot;      &quot;SAT_AVG&quot;       &quot;PCIP26&quot;        &quot;COSTT4_A&quot;     
+##  [9] &quot;C150_4_POOLED&quot; &quot;PFTFTUG1_EF&quot;</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li>(3 points) Are there any NA’s in the data? If so, how many are present and in which variables?</li>
+</ol>
+<pre class="r"><code>#install.packages(&quot;skimr&quot;)
+library(&quot;skimr&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: 'skimr'</code></pre>
+<pre><code>## The following object is masked from 'package:stats':
+## 
+##     filter</code></pre>
+<pre class="r"><code>colleges %&gt;% 
+  skimr::skim()</code></pre>
+<pre><code>## Skim summary statistics
+##  n obs: 341 
+##  n variables: 10 
+## 
+## -- Variable type:character ---------------------------------------------------------------------------------------------------------------------------------------------
+##  variable missing complete   n min max empty n_unique
+##      CITY       0      341 341   4  19     0      161
+##    INSTNM       0      341 341  10  63     0      341
+##    STABBR       0      341 341   2   2     0        3
+##       ZIP       0      341 341   5  10     0      324
+## 
+## -- Variable type:numeric -----------------------------------------------------------------------------------------------------------------------------------------------
+##       variable missing complete   n     mean        sd        p0      p25
+##       ADM_RATE     240      101 341     0.59     0.23     0.081      0.46
+##  C150_4_POOLED     221      120 341     0.57     0.21     0.062      0.43
+##       COSTT4_A     124      217 341 26685.17 18122.7   7956      12578   
+##         PCIP26      35      306 341     0.02     0.038    0          0   
+##    PFTFTUG1_EF      53      288 341     0.56     0.29     0.0064     0.32
+##        SAT_AVG     276       65 341  1112.31   170.8    870        985   
+##       p50       p75     p100     hist
+##      0.64     0.75      1    &lt;U+2583&gt;&lt;U+2582&gt;&lt;U+2585&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2587&gt;&lt;U+2585&gt;&lt;U+2583&gt;
+##      0.58     0.72      0.96 &lt;U+2581&gt;&lt;U+2583&gt;&lt;U+2583&gt;&lt;U+2586&gt;&lt;U+2587&gt;&lt;U+2587&gt;&lt;U+2583&gt;&lt;U+2585&gt;
+##  16591    39289     69355    &lt;U+2587&gt;&lt;U+2583&gt;&lt;U+2581&gt;&lt;U+2582&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+##      0        0.025     0.22 &lt;U+2587&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;&lt;U+2581&gt;
+##      0.5      0.81      1    &lt;U+2581&gt;&lt;U+2585&gt;&lt;U+2587&gt;&lt;U+2586&gt;&lt;U+2583&gt;&lt;U+2585&gt;&lt;U+2583&gt;&lt;U+2587&gt;
+##   1078     1237      1555    &lt;U+2586&gt;&lt;U+2587&gt;&lt;U+2585&gt;&lt;U+2583&gt;&lt;U+2583&gt;&lt;U+2582&gt;&lt;U+2582&gt;&lt;U+2581&gt;</code></pre>
+<p>The number on NAs per column(variable) is shown above, under name <em>Variable type:numeric : missing</em> Each variable has some NAs for a total of 949 NAs</p>
+<ol start="6" style="list-style-type: decimal">
+<li>(3 points) Which cities in California have the highest number of colleges?</li>
+</ol>
+<pre class="r"><code>    colleges %&gt;%
+        group_by(CITY) %&gt;%
+            summarize(total_count=n())%&gt;%
+                arrange(desc(total_count))</code></pre>
+<pre><code>## # A tibble: 161 x 2
+##    CITY          total_count
+##    &lt;chr&gt;               &lt;int&gt;
+##  1 Los Angeles            24
+##  2 San Diego              18
+##  3 San Francisco          15
+##  4 Sacramento             10
+##  5 Berkeley                9
+##  6 Oakland                 9
+##  7 Claremont               7
+##  8 Pasadena                6
+##  9 Fresno                  5
+## 10 Irvine                  5
+## # ... with 151 more rows</code></pre>
+<p>Los Angeles, San Diego &amp; San Francisco</p>
+<ol start="7" style="list-style-type: decimal">
+<li>(4 points) The column <code>COSTT4_A</code> is the annual cost of each institution. Which city has the highest cost?</li>
+</ol>
+<pre class="r"><code>    colleges %&gt;%
+        group_by(CITY) %&gt;%
+            filter(!is.na(COSTT4_A)) %&gt;%
+            summarize( mean_cost = mean(COSTT4_A),
+                       max_cost = max(COSTT4_A)) %&gt;%
+                arrange(desc(max_cost))</code></pre>
+<pre><code>## # A tibble: 132 x 3
+##    CITY          mean_cost max_cost
+##    &lt;chr&gt;             &lt;dbl&gt;    &lt;dbl&gt;
+##  1 Claremont        66498     69355
+##  2 Los Angeles      40796.    67225
+##  3 Malibu           66152     66152
+##  4 San Francisco    43700.    65453
+##  5 Valencia         64686     64686
+##  6 Orange           64501     64501
+##  7 Pasadena         45616.    63471
+##  8 Santa Clara      39008     62964
+##  9 Redlands         61542     61542
+## 10 Moraga           61095     61095
+## # ... with 122 more rows</code></pre>
+<p>Cities with the most expensive schools: Claremont, Los Angeles, and Malibu</p>
+<pre class="r"><code>   colleges %&gt;%
+        group_by(CITY) %&gt;%
+            filter(!is.na(COSTT4_A)) %&gt;%
+            summarize( mean_cost = mean(COSTT4_A),
+                       max_cost = max(COSTT4_A)) %&gt;%
+                arrange(desc(mean_cost))</code></pre>
+<pre><code>## # A tibble: 132 x 3
+##    CITY                mean_cost max_cost
+##    &lt;chr&gt;                   &lt;dbl&gt;    &lt;dbl&gt;
+##  1 Claremont               66498    69355
+##  2 Malibu                  66152    66152
+##  3 Valencia                64686    64686
+##  4 Orange                  64501    64501
+##  5 Redlands                61542    61542
+##  6 Moraga                  61095    61095
+##  7 Atherton                56035    56035
+##  8 Thousand Oaks           54373    54373
+##  9 Rancho Palos Verdes     50758    50758
+## 10 La Verne                50603    50603
+## # ... with 122 more rows</code></pre>
+<p>Cities with the most expensive average tuition: Claremont, Malibu, and Valencia</p>
+</div>
+<div id="this-is-as-far-as-i-got-in-45-minutes." class="section level2">
+<h2>This is as far as I got in 45 minutes.</h2>
+<ol start="8" style="list-style-type: decimal">
 <li><p>(3 points) The column <code>ADM_RATE</code> is the admissions rate by college and <code>C150_4_POOLED</code> is the four-year completion rate. Use a scatterplot to show the relationship between these two variables. What does this mean?</p></li>
 <li><p>(1 point) The column titled <code>INSTNM</code> is the institution name. We are only interested in the University of California colleges. Run the code below and look at the output. Are all of the columns tidy? Why or why not?</p></li>
 </ol>

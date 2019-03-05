@@ -11,6 +11,9 @@ output:
   pdf_document:
     toc: yes
 ---
+### Note:
+I didnt have the chance to try this our in class, because I was nose deep in grad school interviews. I'm going to give it a fair chance (45 minutes), and upload those results. Then I'll copy what I have, correct/finish the test, and upload it seperately. 
+
 
 ## Instructions
 This exam is designed to show me what you have learned and where there are problems. You may use your notes and anything from the `class_files` folder, but please no internet searches. You have 35 minutes to complete as many of these exercises as possible on your own, and 10 minutes to work with a partner.  
@@ -18,18 +21,81 @@ This exam is designed to show me what you have learned and where there are probl
 At the end of the exam, upload the complete .Rmd file to your GitHub repository.  
 
 1. (1 point) Load the tidyverse.
+```{r}
+library(tidyverse)
+```
 
 2. (2 points) For these questions, we will use data about California colleges. Load the `ca_college_data.csv` as a new object called `colleges`.
 
+```{r}
+colleges <- readr::read_csv("./../../data/ca_college_data.csv")
+```
+
 3. (1 point) Use your preferred function to have a look at the data and get an idea of its structure.
+```{r}
+head(colleges)
+```
+```{r}
+glimpse(colleges)
+```
+
 
 4. (1 point) What are the column names?
 
+```{r}
+colnames(colleges)
+```
+
 5. (3 points) Are there any NA's in the data? If so, how many are present and in which variables?
+
+```{r}
+#install.packages("skimr")
+library("skimr")
+
+colleges %>% 
+  skimr::skim()
+
+```
+
+The number on NAs per column(variable) is shown above, under name _Variable type:numeric : missing_
+Each variable has some NAs for a total of 949 NAs
 
 6. (3 points) Which cities in California have the highest number of colleges?
 
+```{r}
+    colleges %>%
+        group_by(CITY) %>%
+            summarize(total_count=n())%>%
+                arrange(desc(total_count))
+
+```
+Los Angeles, San Diego & San Francisco
+
+
 7. (4 points) The column `COSTT4_A` is the annual cost of each institution. Which city has the highest cost?
+```{r}
+    colleges %>%
+        group_by(CITY) %>%
+            filter(!is.na(COSTT4_A)) %>%
+            summarize( mean_cost = mean(COSTT4_A),
+                       max_cost = max(COSTT4_A)) %>%
+                arrange(desc(max_cost))
+```
+Cities with the most expensive schools: Claremont, Los Angeles, and Malibu
+
+```{r}
+   colleges %>%
+        group_by(CITY) %>%
+            filter(!is.na(COSTT4_A)) %>%
+            summarize( mean_cost = mean(COSTT4_A),
+                       max_cost = max(COSTT4_A)) %>%
+                arrange(desc(mean_cost))
+```
+Cities with the most expensive average tuition: Claremont, Malibu, and Valencia
+
+
+## This is as far as I got in 45 minutes. 
+
 
 8. (3 points) The column `ADM_RATE` is the admissions rate by college and `C150_4_POOLED` is the four-year completion rate. Use a scatterplot to show the relationship between these two variables. What does this mean?
 
